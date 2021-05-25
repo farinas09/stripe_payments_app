@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Color(0xff21232a),
       ),
       title: 'Stripe App',
-      initialRoute: 'success',
+      initialRoute: 'home',
       routes: {
         'home': (_) => HomePage(),
         'cards': (_) => CardsPage(),

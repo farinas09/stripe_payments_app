@@ -13,7 +13,13 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           title: Text('Complete Payment'),
           actions: [
-            IconButton(icon: Icon(Icons.add), onPressed: () {}),
+            IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () async {
+                  showLoading(context);
+                  await Future.delayed(Duration(seconds: 1));
+                  Navigator.pop(context);
+                }),
           ],
         ),
         body: Stack(
