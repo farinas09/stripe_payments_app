@@ -1,16 +1,21 @@
-# stripe_app
+# Stripe Payments App
 
-A new Flutter project.
+A new Flutter project for payments using Stripe.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+State Management with Flutter BLoC <br />
+Stripe API <br />
+Apple Pay <br />
+Google Pay
+  
+## Dependencies
 
-A few resources to get you started if this is your first Flutter project:
+- [flutter_bloc](https://pub.dev/packages/flutter_bloc)
+- [flutter_credit_card](https://flutter.dev/docs/cookbook)
+- [stripe_payment](https://pub.dev/packages/stripe_payment)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Config
+- Run flutter pub get.
+- Setup your account on [Stripe](https://stripe.com/)
+- Rename `.env.example.dart` to `.env.dart`, replace `apiKey` with your own `Publishable key` and replace `key` with your own `Secret key`.
