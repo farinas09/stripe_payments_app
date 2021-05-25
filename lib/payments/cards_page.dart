@@ -1,22 +1,25 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
+import 'package:stripe_app/payments/bloc/payment_bloc.dart';
 import 'package:stripe_app/payments/payment_button.dart';
-
-import 'models/payment_card.dart';
 
 class CardsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final card = PaymentCard(
-        cardNumberHidden: '4242',
-        cardNumber: '4242424242424242',
-        brand: 'visa',
-        cvv: '213',
-        expiracyDate: '01/25',
-        cardHolderName: 'Erick Farinas');
+    final card = context.read<PaymentBloc>().state.paymentCard;
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Complete Payment'),
+          leading: IconButton(
+            icon: Icon(CupertinoIcons.chevron_back),
+            onPressed: () {
+              context.read<PaymentBloc>().add(OnCardUnselect());
+              Navigator.pop(context);
+            },
+          ),
         ),
         body: Stack(
           children: [
