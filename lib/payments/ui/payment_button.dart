@@ -7,7 +7,7 @@ import 'package:stripe_app/payments/bloc/payment_bloc.dart';
 import 'package:stripe_app/payments/services/stripe_service.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 
-import 'helpers/helpers.dart';
+import '../helpers/helpers.dart';
 
 class PaymentButton extends StatelessWidget {
   @override
@@ -95,7 +95,17 @@ class _PayButton extends StatelessWidget {
           ),
         ],
       ),
-      onPressed: () {},
+      onPressed: () async {
+        final stripeService = StripeService();
+        final blocState = context.read<PaymentBloc>().state;
+        showLoading(context);
+
+        final response = await stripeService.payWithAppleGoogle(
+          amount: blocState.amountToPay,
+          currency: state.currency,
+        );
+        Navigator.pop(context);
+      },
     );
   }
 

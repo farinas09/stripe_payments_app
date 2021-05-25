@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
 import 'package:stripe_app/payments/bloc/payment_bloc.dart';
-import 'package:stripe_app/payments/payment_button.dart';
+import 'package:stripe_app/payments/ui/payment_button.dart';
 
 class CardsPage extends StatelessWidget {
   @override

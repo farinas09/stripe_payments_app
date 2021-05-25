@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stripe_app/payments/models/payment_intent_response.dart';
 import 'package:stripe_app/payments/models/stripe_response.dart';
 import 'package:stripe_payment/stripe_payment.dart';
+import '.env.dart';
 
 class StripeService {
   StripeService._privateConstructor();
@@ -11,18 +12,14 @@ class StripeService {
   factory StripeService() => _instance;
 
   String _paymentApiURL = 'https://api.stripe.com/v1/payment_intents';
-  String _apiKey =
-      'pk_test_51Iuu8HFgO3yjnhZRGOYTxpwhKueXobCgDGkn33TBCrEiKnvCf86e8LH3913H72VZt3lnxSaNZpylZTuSlran3w0z00aRRJlOSS';
-  static String _key =
-      'sk_test_51Iuu8HFgO3yjnhZRCdc6cDqUcfolClBWLStY1gBCp6JL9smvyjQk9pzr7nVlklov79qQoZdlIb71vlhiR6fXURkF008szJtNxA';
 
   final headerOptions = new Options(
       contentType: Headers.formUrlEncodedContentType,
-      headers: {'Authorization': 'Bearer ${StripeService._key}'});
+      headers: {'Authorization': 'Bearer $key'});
 
   void init() {
     StripePayment.setOptions(StripeOptions(
-        publishableKey: _apiKey, merchantId: "test", androidPayMode: 'test'));
+        publishableKey: apiKey, merchantId: "test", androidPayMode: 'test'));
   }
 
   Future<StripeCustomResponse> payWithExistingCard({
@@ -66,10 +63,43 @@ class StripeService {
     }
   }
 
-  Future payWithAppleGoogle({
+  Future<StripeCustomResponse> payWithAppleGoogle({
     @required String amount,
     @required currency,
-  }) async {}
+  }) async {
+    final amountPay = double.parse(amount) / 100;
+    try {
+      final paymentToken = await StripePayment.paymentRequestWithNativePay(
+        androidPayOptions: AndroidPayPaymentRequest(
+            currencyCode: currency, totalPrice: amount),
+        applePayOptions: ApplePayPaymentOptions(
+            countryCode: 'US',
+            currencyCode: currency,
+            items: [
+              ApplePayItem(amount: '$amountPay', label: 'Product detail')
+            ]),
+      );
+      final paymentMethod = await StripePayment.createPaymentMethod(
+        PaymentMethodRequest(
+          card: CreditCard(token: paymentToken.tokenId),
+        ),
+      );
+
+      final resp = await this._finishPayment(
+        amount: amount,
+        currency: currency,
+        paymentMethod: paymentMethod,
+      );
+
+      await StripePayment.completeNativePayRequest();
+      return resp;
+    } catch (e) {
+      return StripeCustomResponse(
+        success: false,
+        message: e.message,
+      );
+    }
+  }
 
   Future<PaymentIntentResponse> _createPaymentIntent({
     @required String amount,

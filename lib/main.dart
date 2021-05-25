@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stripe_app/payments/bloc/payment_bloc.dart';
-import 'package:stripe_app/payments/cards_page.dart';
-import 'package:stripe_app/payments/home_page.dart';
+import 'package:stripe_app/payments/ui/cards_page.dart';
+import 'package:stripe_app/payments/ui/home_page.dart';
 import 'package:stripe_app/payments/services/stripe_service.dart';
-import 'package:stripe_app/payments/success_payment.dart';
+import 'package:stripe_app/payments/ui/success_payment.dart';
 
 void main() => runApp(MyApp());
 
